@@ -1,0 +1,8 @@
+application: YOUR_APP_NAME
+version: 20150216_16
+runtime: go
+api_version: go1
+
+handlers:
+- url: /.*
+  script: _go_app

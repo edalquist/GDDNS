@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>Google Dynamic DNS Updater - Domain List</title>
+</head>
+<body>
+	<form action="/admin/domains/add" method="post">
+		<table>
+			<tr>
+				<th>Hostname</th>
+				<th>Username</th>
+				<th>Password</th>
+				<th>DomainKey</th>
+			</tr>
+			{{range .}}
+			<tr>
+				<td>{{.Hostname}}</td>
+				<td>{{.Username}}</td>
+				<td>{{.Password}}</td>
+				<td>{{.DomainKey}}</td>
+			</tr>
+			{{end}}
+			<tr>
+				<td><input name="hostname"></td>
+				<td><input name="username"></td>
+				<td><input name="password"></td>
+				<td><input type="submit" value="Add Domain"></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
