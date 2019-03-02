@@ -21,12 +21,12 @@ var (
 )
 
 func init() {
-	http.HandleFunc("/admin/domains/list", list_domains)
-	http.HandleFunc("/admin/domains/add", add_domain)
-	http.HandleFunc("/update_ip", update_ip)
+	http.HandleFunc("/admin/domains/list", listDomains)
+	http.HandleFunc("/admin/domains/add", addDomains)
+	http.HandleFunc("/update_ip", updateIp)
 }
 
-func list_domains(w http.ResponseWriter, r *http.Request) {
+func listDomains(w http.ResponseWriter, r *http.Request) {
 	u := getAdminUser(w, r)
 	if u == nil {
 		return
@@ -43,10 +43,10 @@ func list_domains(w http.ResponseWriter, r *http.Request) {
 	if err := templates.ExecuteTemplate(b, "domain_list.html", domains); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-    b.WriteTo(w)
+	b.WriteTo(w)
 }
 
-func add_domain(w http.ResponseWriter, r *http.Request) {
+func addDomains(w http.ResponseWriter, r *http.Request) {
 	u := getAdminUser(w, r)
 	if u == nil {
 		return
@@ -61,7 +61,7 @@ func add_domain(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin/domains/list", http.StatusFound)
 }
 
-func update_ip(w http.ResponseWriter, r *http.Request) {
+func updateIp(w http.ResponseWriter, r *http.Request) {
 	domainKey := r.FormValue("domain_key")
 	if domainKey == "" {
 		http.Error(w, "domain_key parameter must be specified", http.StatusInternalServerError)
@@ -141,7 +141,7 @@ func getAdminUser(w http.ResponseWriter, r *http.Request) *user.User {
 func getCurrentUser(w http.ResponseWriter, r *http.Request) *user.User {
 	c := appengine.NewContext(r)
 	u := user.Current(c)
-	
+
 	if u == nil {
 		url, err := user.LoginURL(c, r.URL.String())
 		if err != nil {
