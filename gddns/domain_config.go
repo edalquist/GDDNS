@@ -16,7 +16,6 @@ type DomainConfig struct {
 	DomainKey string
 }
 
-
 func ListDomains(c appengine.Context, u *user.User) ([]*DomainConfig, error) {
 	userKey := domainUserKey(c, u)
 	q := datastore.NewQuery("DomainConfig").Ancestor(userKey).Order("-Hostname").Limit(100)
@@ -25,7 +24,7 @@ func ListDomains(c appengine.Context, u *user.User) ([]*DomainConfig, error) {
 	if _, err := q.GetAll(c, &domains); err != nil {
 		return nil, err
 	}
-	
+
 	return domains, nil
 }
 
@@ -41,15 +40,15 @@ func AddDomain(c appengine.Context, u *user.User, hostname string, username stri
 		Password:  password,
 		DomainKey: dk,
 	}
-	
+
 	c.Infof("DomainConfig: %v", dc)
 
 	userKey := domainUserKey(c, u)
 	c.Infof("userKey: %v", userKey)
-	
+
 	dcKey := datastore.NewIncompleteKey(c, "DomainConfig", userKey)
 	c.Infof("dcKey: %v", dcKey)
-	
+
 	if _, err := datastore.Put(c, dcKey, &dc); err != nil {
 		c.Infof("err: %v", err)
 		return nil, err
